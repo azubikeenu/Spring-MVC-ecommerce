@@ -1,0 +1,75 @@
+<html xmlns:th="http://www.thymeleaf.com">
+<head th:replace="fragments::html_head"> 
+</head>
+<body>
+ <nav th:replace="fragments::menu"> </nav>
+           
+<div class="main">
+        <!----PLACE CONTENT HEHE-->
+               <div class="container py-5">
+
+            <div class="row">
+                <div class="col-md-6 offset-md-3">
+                    <h3>Create User</h3>
+                    <form th:action="@{/admin/users/save}" method="POST" th:object="${user}" id="createCategory">
+                        <div class="form-group">
+                            <label for="name">First Name</label>
+                            <input class="form-control" name="firstName" type="text" id="firstName"  th:field = "*{firstName}"
+                             placeholder="Enter First Name" required data-parsley-pattern="^[A-Za-z]+$" data-parsley-trigger ="focusout">
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Last Name</label>
+                            <input class="form-control" type="text" id="lastName" th:field ="*{lastName}"  placeholder="Enter Last Name" required
+                            data-parsley-pattern="^[A-Za-z]+$" data-parsley-trigger ="focusout"
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Email</label>
+                            <input class="form-control" type="email" id="email" th:field ="*{email}" placeholder="Enter Email " required
+                             data-parsley-type="email" data-parsley-trigger="focusout" data-parsley-checkemail data-parsley-checkemail-message="Email Address already Exists"
+                            >
+
+                        </div>
+                          <div class="form-group row  m-3">
+            	<label class="col-sm-4 col-form-label">Roles</label> 
+            	<div class="col-sm-8">
+            	  <th:block th:each ="role : ${roles}">
+            	    <input type="checkbox" th:field ="*{roles}" th:text="${role.name}" th:value= "${role.id}" class="m-2"/>
+            	    -<small>[[${role.description}]]</small> <br/>
+            	  </th:block>
+            	</div>
+            	</div>
+                        
+                        <div class="form-group">
+                            <label for="name">Password</label>
+                            <input class="form-control" type="password" id="password" 
+                            th:field ="*{password}" placeholder="Enter Password" required
+                            data-parsley-length="[6,16]" data-parsley-trigger="focusout"
+                           />
+                        </div>
+                        
+               <div class="form-group row  ">
+            	<label class="col-sm-4 col-form-label">isActive</label> 
+            	<div class="col-sm-8 mt-3">
+            	<input type="checkbox"  th:field="*{active}"/>
+            	</div>
+            	</div>
+
+                        <button class="btn btn-primary">CREATE USER</button>
+                        <a th:href="@{/admin/users}" class="btn btn-info mr-5">CANCEL </a>
+
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--FOOTER-->
+    <footer th:replace="fragments::footer"></footer>
+
+    <div th:replace="fragments::scripts"></div>
+</body>
+
+</html>

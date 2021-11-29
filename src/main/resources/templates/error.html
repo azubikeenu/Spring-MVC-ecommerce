@@ -1,0 +1,24 @@
+<html xmlns:th="http://www.thymeleaf.com">
+<head th:replace="fragments::html_head"> 
+</head>
+<body>
+ <nav th:replace="fragments::menu"> </nav>
+           
+<div class="main">
+        <!----PLACE CONTENT HEHE-->
+         <div class="container py-5">
+           <div class="col-md-6 offset-md-3 text-center" >
+               <p class="display-4">Something went wrong 😢 </p>
+                <p class="lead"> We are currently working on it</p>
+               
+           </div>
+         </div>
+    </div>
+
+    <!--FOOTER-->
+    <footer th:replace="fragments::footer"></footer>
+
+    <div th:replace="fragments::scripts"></div>
+</body>
+
+</html>

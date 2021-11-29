@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.com">
+
+<head th:replace="fragments::html_head">
+</head>
+
+<body>
+    <nav th:replace="fragments::menu"> </nav>
+
+    <div class="main">
+        <!----PLACE CONTENT HERE-->
+        <div class="container py-5">
+            <h3>USERS</h3>
+            <div th:if="${message!=null}" class="alert alert-success text-center">
+               <strong>[[${message}]]</strong>
+            </div>
+
+            <a th:href="@{/admin/users/create}" class="btn btn-primary mb-4 text-light">CREATE USER</a>
+            <table class="table table-striped table-bordered table-sm users-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>NAME</th>
+                        <th>EMAIL</th>
+                        <th>IS ACTIVE</th>
+                        <th>ROLE</th>
+                        <th>ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="user : ${users}">
+                        <th scope="row">[[${user.userId}]]</th>
+                        <td>[[${user.firstName}]] &nbsp;[[${user.lastName}]] </td>
+                        <td>[[${user.email}]]</td>
+
+                        <td th:switch="${user.isActive}">
+                            <i class="fas fa-check" th:case=true></i>
+                            <i class="fas fa-times" th:case=false></i>
+                        </td>
+                        <td>[[${user.roles}]]</td>
+                        <td>
+                            <a th:href="@{'/admin/users/update/' + ${user.userId}}" th:attr="data-id=${user.userId}"
+                                class="btn btn-light btn-sm editUser" data-toggle="modal"
+                                data-target="#userEditModal"><i th:attr="data-id=${user.userId}"
+                                    class="fas fa-edit"></i></a>
+                            <a th:href="@{'/admin/users/delete/' + ${user.userId}}"  th:attr="data-id=${user.userId}"  class="btn btn-danger btn-sm deleteUser"><i  th:attr="data-id=${user.userId}"  class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <!--END-->
+
+
+    </div>
+
+    <div class="modal" id="userEditModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title text-light">Edit User</h5>
+                    <button class="close text-light" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id ="userEditModalForm">
+                        <div class="form-group">
+                            <label for="name">First Name</label>
+                            <input class="form-control" name="firstName" type="text" id="firstNameEdit"
+                                 placeholder="Enter First Name" required
+                                data-parsley-pattern="^[A-Za-z]+$" data-parsley-trigger="focusout">
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Last Name</label>
+                            <input class="form-control" type="text" id="lastNameEdit"
+                                placeholder="Enter Last Name" required data-parsley-pattern="^[A-Za-z]+$"
+                                data-parsley-trigger="focusout">
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Email</label>
+                            <input class="form-control" type="email" id="emailEdit" 
+                                placeholder="Enter Email " required readonly="readonly">
+
+                        </div>
+                <div class="col-sm-8">
+            	  
+            	    <input type="checkbox" value= "ADMIN" class="m-2" id="rolesAdminEdit" name="roles">
+            	     ADMIN
+            	    -<small>Manages Everything</small> <br/>
+            	  
+            	    <input type="checkbox" value= "USER" class="m-2" id="rolesUserEdit" name="roles">
+            	     USER            	   
+            	    -<small>Minimum functionality</small> <br/>
+            	  
+            	</div>
+            	
+            	 <div class="col-sm-8">
+            	  
+            	    <input type="checkbox" value="active" class="m-2" id="isActiveEdit" name="isActive">
+            	     IsActive
+            	</div>  
+            	     <input type="hidden"  id="userId"  value=""/>	
+                  
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button  id="userEditButton" class="btn btn-success">Edit</button>
+                    <button class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--FOOTER-->
+    <footer th:replace="fragments::footer"></footer>
+
+    <div th:replace="fragments::scripts"></div>
+</body>
+
+</html>

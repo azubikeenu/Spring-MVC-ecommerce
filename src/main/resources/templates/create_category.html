@@ -1,0 +1,47 @@
+<html xmlns:th="http://www.thymeleaf.com">
+<head th:replace="fragments::html_head"> 
+</head>
+<body>
+ <nav th:replace="fragments::menu"> </nav>
+           
+<div class="main">
+        <!----PLACE CONTENT HEHE-->
+               <div class="container py-5">
+
+            <div class="row">
+                <div class="col-md-6 offset-md-3">
+                    <h3>Create Category</h3>
+                    <form th:action="@{/admin/categories/save}" method="POST" th:object="${category}" id="createUser">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input class="form-control" name="firstName" type="text" id="name"  th:field = "*{name}"
+                             placeholder="Enter Name" required data-parsley-check_category_name data-parsley-check_category_name-message="Category with that name exists in database" data-parsley-trigger ="focusout">
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Description</label>
+               					 <textarea class="form-control" th:field = "*{description}" name ="description" id="message" rows="4" required  data-parsley-trigger ="focusout"></textarea>
+                        </div>
+                                              
+               <div class="form-group row  ">
+            	<label class="col-sm-4 col-form-label">isEnabled</label> 
+            	<div class="col-sm-8 mt-3">
+            	<input type="checkbox"  name="enabled" th:field="*{enabled}"/>
+            	</div>
+            	</div>
+                        <button class="btn btn-primary">CREATE CATEGORY</button>
+                        <a th:href="@{/admin/categories}" class="btn btn-info mr-5">CANCEL </a>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--FOOTER-->
+    <footer th:replace="fragments::footer"></footer>
+
+    <div th:replace="fragments::scripts"></div>
+</body>
+
+</html>

@@ -19,6 +19,10 @@ public class Category {
 	private String name;
 	@Column
 	private String description;
+
+	@Column
+	private String alias;
+
 	@Column
 	private boolean enabled;
 
@@ -52,6 +56,14 @@ public class Category {
 
 	public void setCategoryId(String categoryId) {
 		this.categoryId = categoryId;
+	}
+
+	public String getAlias() {
+		return alias;
+	}
+
+	public void setAlias(String alias) {
+		this.alias = alias;
 	}
 
 	public boolean isEnabled() {

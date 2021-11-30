@@ -1,0 +1,69 @@
+<html xmlns:th="http://www.thymeleaf.com">
+<head th:replace="fragments::html_head"> 
+</head>
+<body>
+ <nav th:replace="fragments::menu"> </nav>
+           
+<div class="main">
+        <!----PLACE CONTENT HEHE-->
+     
+                <div class="container py-5">
+            <h3>PRODUCTS</h3>
+               <a th:href="@{/admin/products/create}" class="btn btn-primary mb-4 text-light">CREATE PRODUCT</a>
+            <table class="table table-striped table-bordered table-sm">
+                <thead>
+                    <tr>
+                        <th>IMAGE</th>
+        
+                        <th>NAME</th>
+                        <th>PRICE</th>
+                        <th>CATEGORY</th>
+                        <th>ENABLED</th>
+                        <th>STOCK</th>
+                        <th>ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr th:each="product :${products}">
+                
+                  		<th scope="row">
+                           <img th:src="@{${product.imagePath}}" alt="" class="img-fluid" height=" 50px" width="50px">
+                        </th>
+                        <td>[[${product.name}]]</td>
+                        <td>[[${product.price}]]</td>
+                        <td>[[${product.category.name}]]</td>
+                        <td th:switch="${product.enabled}">
+                            <i class="fas fa-check" th:case=true></i>
+                            <i class="fas fa-times" th:case=false></i>
+                        </td>
+                     
+                        <td th:switch="${product.inStock}">
+                            <i class="fas fa-check" th:case=true></i>
+                            <i class="fas fa-times" th:case=false></i>
+                        </td>
+                     
+                        <td>
+                            <a th:href="@{'/admin/products/edit/' + ${product.productId}}" th:attr="data-id=${product.productId}"
+                                class="btn btn-light btn-sm editproduct"
+              					 >
+                                <i class="fas fa-edit"></i></a>                 
+                            <a th:href="@{'/admin/products/delete/' + ${product.productId}}"  th:attr="data-id=${product.productId}"  class="btn btn-danger btn-sm deleteproduct"><i  th:attr="data-id=${product.productId}"  class="fas fa-trash"></i></a>
+ 
+                        </td>
+                        
+                    </tr>
+                    <tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+    
+
+    <!--FOOTER-->
+    <footer th:replace="fragments::footer"></footer>
+
+    <div th:replace="fragments::scripts"></div>
+</body>
+
+</html>

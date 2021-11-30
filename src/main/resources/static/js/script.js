@@ -208,6 +208,26 @@ $('.deleteUser').on('click', function(e){
 	
 })
 
+//////////========CATEGORIES END -----------------////////////////
+
+////////-----------PRODUCT START-----------------////////////////
+$('#image').on('change', function(e){
+	const [file] = this.files
+	const fileReader = new FileReader();
+	fileReader.onload = function(e){
+		$('#thumbnail').attr('src', e.target.result)
+	}
+	fileReader.readAsDataURL(file);
+})
+
+window.ParsleyValidator.addValidator('check_image_size', {
+	validateNumber: function(value) {
+      
+    },
+	
+})
 				  
 })
-//////////========CATEGORIES END -----------------////////////////
+
+
+

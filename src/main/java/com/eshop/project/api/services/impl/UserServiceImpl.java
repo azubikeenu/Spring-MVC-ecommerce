@@ -88,8 +88,8 @@ public class UserServiceImpl implements UserService {
 		User userFound = userRepository.findByUserId(userId);
 		if (userFound == null)
 			throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessages());
-		userFound.setFirstName(userRequestDetails.getFirstName());
-		userFound.setLastName(userRequestDetails.getLastName());
+		userFound.setFirstName(utils.normalizeString(userRequestDetails.getFirstName()));
+		userFound.setLastName(utils.normalizeString(userRequestDetails.getLastName()));
 		userFound.setActive(userRequestDetails.isActive());
 		Set<Role> roles = new HashSet<>();
 		if (userRequestDetails.getRoles().size() > 0) {

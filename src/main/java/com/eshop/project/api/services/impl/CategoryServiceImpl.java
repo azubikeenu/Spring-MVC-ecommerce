@@ -37,11 +37,12 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public Category createCategory(CategoryRequestDetails category) {
-		Category foundCategory = categoryRepository.findByName(category.getName());
+		Category foundCategory = categoryRepository.findByName(utils.normalizeString(category.getName()));
 		if (foundCategory != null)
 			throw new CategoryServiceException(ErrorMessages.RECORD_ALREADY_EXISTS.getErrorMessages());
 		Category categoryEntity = new ModelMapper().map(category, Category.class);
 		categoryEntity.setCategoryId(utils.generateRandomId(30));
+		categoryEntity.setAlias(utils.getStub(categoryEntity.getName()));
 		return categoryRepository.save(categoryEntity);
 
 	}
@@ -79,6 +80,11 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public Category isNameUnique(String name) {
 		return categoryRepository.findByName(name);
+	}
+
+	@Override
+	public List<Category> findAllActiveCategories() {
+		return categoryRepository.findAllActiveCategories();
 	}
 
 }

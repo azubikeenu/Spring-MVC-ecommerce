@@ -1,0 +1,93 @@
+<html xmlns:th="http://www.thymeleaf.com">
+<head th:replace="fragments::html_head"> 
+</head>
+<body>
+ <nav th:replace="fragments::menu"> </nav>
+           
+<div class="main">
+        <!----PLACE CONTENT HEHE-->  
+                <div class="container py-5">
+
+            <div class="row">
+                <div class="col-md-6 offset-md-3">
+                    <h3>Edit Product</h3>
+                    <form th:action="@{/admin/products/update}" method="POST" th:object="${product}" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input class="form-control" th:field ="*{name}" type="text" id="name" placeholder="Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Price</label>
+                            <input class="form-control" th:field ="*{price}" type="text"  placeholder="Enter Price">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="name">Category</label>
+                            <select class="form-select" id="category" th:field ="*{category}">
+                               <th:block th:each ="category : ${categories}">
+   							  <option th:value="${category.id}"> [[${category.name}]] </option>
+								</th:block>
+                               
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Quantity</label>
+                            <input class="form-control" type="number" id="name" th:field ="*{quantity}" placeholder="Enter Quantity">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Description</label>
+                            <textarea class="form-control" id="description" th:field ="*{description}" rows="3"></textarea>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col md-6">
+                                <div class="form-group">
+                                    <label for="file">Image</label>
+                                    <input class="form-control-file" name="imageFile"  type="file" id="image" accept="image/*">
+                                    <small class="form-text text-muted" id="fileHelp">Max 3mb size</small>
+                                </div>
+                            </div>
+                            <div class="col md-6">
+                                <img th:src="@{${product.imagePath}}" alt="product_preview" id="thumbnail" class=" img-fluid w-50">
+                            </div>
+                            
+                            
+                        </div>
+                        
+                          <div class="row mb-3">
+                            <div class="col-md-6 ">
+                                <label for="enabled">Enabled</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="checkbox" th:field ="*{enabled}" name="" id="">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6 ">
+                                <label for="enabled">In-stock</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="checkbox" th:field ="*{inStock}" name="" id="">
+                            </div>
+                        </div>
+                        
+                       <input type="hidden" name="productId" th:field="*{productId}" id="productId">
+                         <input type="hidden" name="image" th:field="*{image}" >
+                      
+                        <button class="btn btn-primary">UPDATE PRODUCT</button>
+                           <a th:href="@{/admin/products}" class="btn btn-info mr-5">CANCEL </a>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--FOOTER-->
+    <footer th:replace="fragments::footer"></footer>
+
+    <div th:replace="fragments::scripts"></div>
+</body>
+
+</html>

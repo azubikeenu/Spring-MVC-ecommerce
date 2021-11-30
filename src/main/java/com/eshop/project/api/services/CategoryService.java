@@ -19,4 +19,6 @@ public interface CategoryService {
 	Category findCategoryById(String categoryId);
 
 	Category isNameUnique(String name);
+
+	List<Category> findAllActiveCategories();
 }

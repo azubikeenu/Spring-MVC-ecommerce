@@ -2,6 +2,8 @@ package com.eshop.project.api.services;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+
 import com.eshop.project.api.entities.Product;
 
 public interface ProductService {
@@ -18,5 +20,9 @@ public interface ProductService {
 	Product updateProduct(String productId, Product product);
 
 	void deleteProduct(String productId);
+
+	Product isNameUnique(String name);
+
+	Page<Product> listByPage(int pageNumb);
 
 }

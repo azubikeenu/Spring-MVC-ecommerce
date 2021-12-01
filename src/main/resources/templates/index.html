@@ -6,6 +6,34 @@
            
 <div class="main">
         <!----PLACE CONTENT HEHE-->
+                <section id="product-list" class="py-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <h3>Product List</h3>
+                    </div>
+                </div>
+
+                <div  class="row">
+                    <div  th:each ="product : *{products}" class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                        <div class="card my-3 p-3 rounded shadow p-3 mb-5 bg-white rounded">
+                            <a th:href="@{'/products/' + ${product.alias}}">
+                                <img class="card-img-top" th:src="@{${product.imagePath}}" alt="">
+                            </a>
+                            <div class="card-body text-center">
+                                
+                                <p class="card-text">[[${product.name}]]</p>
+                                <h3 class="card-text"><span>&#163;</span>[[${product.price}]]</h3>
+                            </div>
+
+                        </div>
+                    </div>
+                
+
+                </div>
+            </div>
+
+        </section>
     </div>
 
     <!--FOOTER-->

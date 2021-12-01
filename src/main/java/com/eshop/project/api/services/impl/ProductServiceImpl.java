@@ -3,6 +3,9 @@ package com.eshop.project.api.services.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.eshop.project.api.entities.Product;
@@ -14,6 +17,9 @@ import com.eshop.project.api.shared.utils.Utils;
 
 @Service
 public class ProductServiceImpl implements ProductService {
+
+	private static final int PAGE_SIZE = 6;
+
 	@Autowired
 	private ProductRepository productRepository;
 
@@ -79,6 +85,18 @@ public class ProductServiceImpl implements ProductService {
 			throw new ProductServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessages());
 		productRepository.delete(foundProduct);
 
+	}
+
+	@Override
+	public Product isNameUnique(String name) {
+		return productRepository.findByName(name);
+	}
+
+	@Override
+	public Page<Product> listByPage(int pageNumb) {
+		Pageable pageable = PageRequest.of(pageNumb - 1, PAGE_SIZE);
+
+		return productRepository.findAll(pageable);
 	}
 
 }

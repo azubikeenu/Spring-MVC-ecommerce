@@ -3,6 +3,10 @@ $(function() {
     $('#createCategory').parsley();
     $('#loginForm').parsley();
 	$('#updateProfile').parsley();
+	$('#createProductForm').parsley();
+	$('#productEditForm').parsley();
+	
+	
 	
 	//////////------------USERS ---------------////////////
 	window.ParsleyValidator.addValidator('checkemail', {
@@ -218,14 +222,58 @@ $('#image').on('change', function(e){
 		$('#thumbnail').attr('src', e.target.result)
 	}
 	fileReader.readAsDataURL(file);
-})
-
-window.ParsleyValidator.addValidator('check_image_size', {
-	validateNumber: function(value) {
-      
-    },
+	
 	
 })
+
+window.ParsleyValidator.addValidator('check_product_name', {
+		validateString: function(value) {
+			const url = `${window.location.origin}/e-shop/api/admin/products/check_product_name`;
+			const _csrf = $("input[name= '_csrf']").val()
+			params = { name, _csrf }
+
+			return $.ajax({
+				url: url,
+				method: "POST",
+				data: { name: value, _csrf },
+				dataType: "json",
+				success: function(data) {
+					return true;
+
+				}
+			});
+		}
+	});	
+
+	//DELETE CATEGORY 
+	
+	$('.deleteProduct').on('click', function(e){
+	 e.preventDefault();
+    const r = confirm("Are you sure you want to delete this product ?")
+    if(r){
+	
+     const {id} = e.target.dataset;
+
+  	const ORIGIN =window.location.origin;
+	const url = `${ORIGIN}/e-shop/api/admin/products/${id}`;
+	fetch(url , {
+		method : 'DELETE',
+		headers : {
+		  'Content-Type' : 'application/json'	
+		}		
+	}).then(response => response.json())
+	   .then(data => {
+		console.log(data);
+		window.location.href =  `${ORIGIN}/e-shop/admin/products/delete/redirect`
+	} ).catch(err => console.log(err))
+	
+	}else{
+		return false;
+	}
+	
+})
+
+
 				  
 })
 

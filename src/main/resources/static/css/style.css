@@ -87,6 +87,7 @@ p.item-hl {
        .parsley-urlstrict,
        .parsley-length,
        .parsley-check_category_name,
+       .parsley-check_product_name,
        .parsley-checkemail,.parsley-custom-error-message{
         color:#ff0000;
        }

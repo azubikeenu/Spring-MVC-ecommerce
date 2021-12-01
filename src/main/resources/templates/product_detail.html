@@ -1,0 +1,66 @@
+<html xmlns:th="http://www.thymeleaf.com">
+<head th:replace="fragments::html_head"> 
+</head>
+<body>
+ <nav th:replace="fragments::menu"> </nav>
+           
+<div class="main">
+        <!----PLACE CONTENT HEHE-->
+                <section id="product-detail" class="py-3">
+            <div class="container">
+                <h3>Product Detail</h3>
+
+                <div class="row">
+                    <div class="col-md-5">
+                        <img th:src="@{${product.imagePath}}" alt="" class="img-fluid">
+                    </div>
+                    <div class="col-md-4 pr-4">
+                        <h3 class="item-hl">[[${product.name}]]</h3>
+                        <p class="item-hl">Place reviews here</p>
+                        <p class="item-hl">Price :<span>&#163;</span>[[${product.price}]]</p>
+                        <p class="item-hl">Description :
+                           [[${product.description}]]
+                        </p>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="row ">
+                            <div class="col action-item " style="border-right: none;">Price : </div>
+                            <div class="col action-item" style="border-left: none;"><span>&#163;</span>[[${product.price}]]</div>
+                        </div>
+                        <div class="row ">
+                            <div class="col action-item " style="border-right: none; border-top: none;">Status : </div>
+                            <div class="col action-item" style="border-left: none; border-top: none;">In Stock</div>
+                        </div>
+                        <div class="row ">
+                            <div class="col action-item " style="border-right: none; border-top: none;">Quantity :
+                            </div>
+                            <div class="col action-item" style="border-left: none; border-top: none;">
+                                <select class="form-select" id="exampleSelect1">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <div class="col action-item " style="border-top: none;">
+                                <button class="btn btn-primary btn-block"> ADD TO CART</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!--FOOTER-->
+    <footer th:replace="fragments::footer"></footer>
+
+    <div th:replace="fragments::scripts"></div>
+</body>
+
+</html>

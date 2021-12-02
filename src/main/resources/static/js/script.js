@@ -5,6 +5,9 @@ $(function() {
 	$('#updateProfile').parsley();
 	$('#createProductForm').parsley();
 	$('#productEditForm').parsley();
+	$('#checkOut').parsley();
+	
+	
 	
 	
 	
@@ -273,9 +276,213 @@ window.ParsleyValidator.addValidator('check_product_name', {
 	
 })
 
-
-				  
+  const price = parseFloat($("#productPrice").text());
+//MODIFY PRICE ON QUANITY CHANGE
+  $('#productQuantity').change(function(e){
+	  const quantity=   parseInt(e.target.value);
+      const newPrice = price*quantity ;
+    $ ("#productPrice").text(`${newPrice}`) ;  
+	
 })
+
+
+//////////////////----------------SHOPPING CART ----------------------------//////////////////////
+// ADD ITEM TO SHOPPING Cart
+
+$('#addToCart').click(function(e){
+	const productId =  $('#productId').val();
+	const productQuantity = $('#productQuantity').val()
+	const imagePath =window.location.origin +"/e-shop" +$("#productImage").val();
+	const totalQuantity = $('#totalQuantity').val();
+	const productName = $("#productName").text();
+	const price =  $ ("#productPrice").text();
+    const product = {name : productName , quantity :productQuantity, image :  imagePath , id : productId ,totalQuantity,price }
+    storeCartItemsInLocalStorage(product);
+})
+
+function storeCartItemsInLocalStorage ( item ) {
+    const cart = !localStorage.getItem( "cart" ) ? [] : JSON.parse( localStorage.getItem( "cart" ) );
+    if(cart.length > 0 ){
+      const foundItem =cart.find(el => el.id === item.id);
+     foundItem ? foundItem.quantity = item.quantity : cart.push(item)
+	 }else{
+		cart.push( item );
+	}  	 
+    localStorage.setItem( "cart", JSON.stringify( cart ) )
+    window.location.href  = `${window.location.origin}/e-shop/cart`
+}
+   
+   const cartBody=  document.getElementById('cartBody')
+    if(cartBody){
+	  cartBody.innerHTML = "";
+      let html = "";
+	  const cart = !localStorage.getItem( "cart" ) ? [] : JSON.parse( localStorage.getItem( "cart" ) );   
+      if(cart.length > 0){
+            for(const item of cart){
+					html +=	
+					`
+                    <div class="row pt-3 item-hl">
+                        <div class="col-md-2">
+							<img src="${item.image}" alt="" class="img-fluid align-self-end"
+                                width="100px" height="100px">
+						</div>
+                        <div class="col-md-3 "> <strong>${item.name}</strong>
+                        </div>
+                        <div class="col-md-2"><span id="itemPrice">&#163;${item.price}</span> &times; <span id="itemQuantity">${item.quantity}</span> </div>
+                       <div class="col-md-2">
+                            <div>
+                                <ul class="pagination">
+                                    <li class="page-item   ">
+                                        <a class="page-link minusQuantity" href="#">-</a>
+                                    </li>
+                                    <li class="page-item active">
+                                        <input type="text" name="" id="" onkeydown="return false"
+                                            class="form-control text-center" data-product_id=${item.id} data-parsley-min="0" data-parsley-max="${item.totalQuantity}" data-parsley-trigger="input"  value="${item.quantity}" disabled  style="width:70px;">
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link plusQuantity " href="#">+</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-2 text-center"><i data-product_id=${item.id} class="fa fa-trash deleteItem" style="cursor:hand"></i></div>
+					  </div>	
+					`
+				}
+				
+			
+		 		const cartSummary = document.getElementById('cartSummary');
+			    const {subTotal, totalItems} = getTotalQuantityAndPriceOfItems();
+			    const cartSummaryContent = 
+						`
+					  <div class="row ">
+                        <div class="col action-item text-center ">
+							<h3>Subtotal :<span>&#163;</span><span id="subTotal">${subTotal}</span></h3>
+                            <p class="lead">Total Items : <span id="totalItems"> ${totalItems}</span> item(s)<p>                       
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col action-item " style="border-top: none;">
+                            <button class="btn btn-primary btn-block" id="checkOutBtn"> PROCEED TO CHECKOUT</button>
+                        </div>
+                    </div>
+					`
+			        cartSummary.insertAdjacentHTML('afterbegin',cartSummaryContent);
+	
+ 			}else{
+	            
+	            html+=`<div class="alert  alert-info"> 							
+  					<strong>NO ITEMS IN CART</strong>
+				</div>`
+			}
+	    	cartBody.insertAdjacentHTML('afterbegin',html);
+		
+	}
+	
+	// UPDATE CART ITEMS 
+	
+	const plusQuantities = document.querySelectorAll('.plusQuantity')
+	
+     plusQuantities.forEach(e => e.addEventListener('click',function decrement(e){	
+		e.preventDefault();
+            const container  = e.target.parentElement.previousElementSibling	
+            const textbox = container.querySelector('input[type="text"]');
+            let {value} = textbox;
+			const {product_id} = textbox.dataset;
+            value = parseInt(value) +1 ;
+            textbox.value = value;	
+			persistQuantityInLocalStorage(product_id,value)
+			reflectQuantityOnDiv(container ,value);
+			reflectSubTotalAndTotalItems();
+			
+	}) )	
+	
+	
+	const minusQuantities = document.querySelectorAll('.minusQuantity')	
+	minusQuantities.forEach(e => e.addEventListener('click',function decrement(e){	
+		e.preventDefault();
+            const container  = e.target.parentElement.nextElementSibling
+            const textbox = container.querySelector('input[type="text"]');
+            let {value} = textbox;
+			const {product_id} = textbox.dataset;
+            value = parseInt(value) -1 ;
+			if(value>=1){
+				textbox.value = value;
+			    persistQuantityInLocalStorage(product_id,value)
+				reflectQuantityOnDiv(container ,value);
+				reflectSubTotalAndTotalItems();
+			}
+           
+	}) )
+	
+	
+	function persistQuantityInLocalStorage(product_id,value){
+			const cart = !localStorage.getItem( "cart" ) ? [] : JSON.parse( localStorage.getItem( "cart" ) );   
+		    const foundItem =cart.find(el => el.id === product_id);
+			foundItem.quantity = value
+			localStorage.setItem("cart",JSON.stringify( cart ) );
+	}
+	
+	function reflectQuantityOnDiv(container ,value){
+		const quantityContainer =container.parentElement.parentElement.parentElement.previousElementSibling;
+		const quantitySpan = quantityContainer.querySelector('span#itemQuantity')
+		quantitySpan.innerText = value;
+	}
+	
+	// DELETE CART ITEMS 
+	const deleteButtons = document.querySelectorAll('.deleteItem');
+    deleteButtons.forEach(e => e.addEventListener('click',function(e){
+		const {product_id} = e.target.dataset;
+		let cart = !localStorage.getItem( "cart" ) ? [] : JSON.parse( localStorage.getItem( "cart" ) );   
+		 cart = cart.filter(el => el.id !== product_id);
+		e.target.parentElement.parentElement.remove();
+		localStorage.setItem("cart",JSON.stringify( cart ) );
+		reflectSubTotalAndTotalItems();
+	
+	}) )
+	
+   function getTotalQuantityAndPriceOfItems(){
+	let cart = !localStorage.getItem( "cart" ) ? [] : JSON.parse( localStorage.getItem( "cart" ) );
+	 const  subTotal  = cart.reduce((acc,current) => acc + (current.price * current.quantity),0);
+	 const totalItems = cart.length ;
+     return {subTotal , totalItems}
+	
+	}
+	
+	function reflectSubTotalAndTotalItems(){
+		const {subTotal, totalItems} = getTotalQuantityAndPriceOfItems();
+		const subTotalContainer = document.getElementById('subTotal');
+		const totalItemsContainer = document.getElementById('totalItems');
+		subTotalContainer.innerText = subTotal.toFixed(2);
+		totalItemsContainer.innerText = totalItems;
+	}
+	
+	
+
+
+$('#checkOutBtn').click(function(e){
+		const cart = !localStorage.getItem( "cart" ) ? [] : JSON.parse( localStorage.getItem( "cart" ) );  
+		if(cart.length > 0){
+			$.ajaxSetup({contentType : "application/json"});
+			payload = cart;
+			const url =`${window.location.origin}/e-shop/api/cart/save_items`
+			$.post(url,JSON.stringify(payload))
+			.done(function(response){
+				if(response['operationResult']=== "SUCCESS"){
+					window.location.href = `${window.location.origin}/e-shop/`;
+				}else{
+					console.log('An Error Occured')
+				}
+			})
+
+		}
+			
+	})
+	
+	
+		
+})
+
 
 
 

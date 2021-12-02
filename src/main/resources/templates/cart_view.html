@@ -1,0 +1,34 @@
+<html xmlns:th="http://www.thymeleaf.com">
+<head th:replace="fragments::html_head"> 
+</head>
+<body>
+ <nav th:replace="fragments::menu"> </nav>
+           
+<div class="main">
+		<div class="container pt-5">
+            <div class="row">
+                <h3>Shopping Cart</h3>
+                
+                <form action="" id="checkOut" class="form-inline">
+                <div class="col-md-8 font-weight-bold mr-5" id="cartBody">
+                    
+                </div>
+                <div class="col-md-3" id="cartSummary">
+                  
+                </div>
+                </form>
+              
+            </div>
+
+        </div>
+
+    </div>
+        <!----PLACE CONTENT HEHE-->
+    
+    <!--FOOTER-->
+    <footer th:replace="fragments::footer"></footer>
+
+    <div th:replace="fragments::scripts"></div>
+</body>
+
+</html>

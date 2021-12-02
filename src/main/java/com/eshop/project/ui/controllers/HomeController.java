@@ -31,7 +31,13 @@ public class HomeController {
 	@GetMapping("products/{alias}")
 	String showProductDetails(@PathVariable String alias, Model model) {
 		Product product = productService.findProductByAlias(alias);
+		model.addAttribute("totalQuantity", product.getQuantity());
 		model.addAttribute("product", product);
 		return "product_detail.html";
+	}
+
+	@GetMapping("/cart")
+	String showCart() {
+		return "cart_view.html";
 	}
 }

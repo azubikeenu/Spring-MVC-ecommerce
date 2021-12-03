@@ -333,14 +333,14 @@ function storeCartItemsInLocalStorage ( item ) {
                             <div>
                                 <ul class="pagination">
                                     <li class="page-item   ">
-                                        <a class="page-link minusQuantity" href="#">-</a>
+                                        <a class="page-link minusQuantity"  href="#">-</a>
                                     </li>
                                     <li class="page-item active">
                                         <input type="text" name="" id="" onkeydown="return false"
-                                            class="form-control text-center" data-product_id=${item.id} data-parsley-min="0" data-parsley-max="${item.totalQuantity}" data-parsley-trigger="input"  value="${item.quantity}" disabled  style="width:70px;">
+                                            class="form-control text-center" data-product_id=${item.id} data-parsley-min="0" data-parsley-max="${item.totalQuantity}" data-parsley-trigger="focusout"  value="${item.quantity}" disabled  style="width:70px;">
                                     </li>
                                     <li class="page-item">
-                                        <a class="page-link plusQuantity " href="#">+</a>
+                                        <a class="page-link plusQuantity " data-max= "${item.totalQuantity}"href="#">+</a>
                                     </li>
                                 </ul>
                             </div>
@@ -385,12 +385,14 @@ function storeCartItemsInLocalStorage ( item ) {
 	
      plusQuantities.forEach(e => e.addEventListener('click',function decrement(e){	
 		e.preventDefault();
-            const container  = e.target.parentElement.previousElementSibling	
+            const container  = e.target.parentElement.previousElementSibling;
+			const maxQuantity = e.target.dataset.max;
+			console.log(maxQuantity);
             const textbox = container.querySelector('input[type="text"]');
             let {value} = textbox;
 			const {product_id} = textbox.dataset;
             value = parseInt(value) +1 ;
-            textbox.value = value;	
+            textbox.value = value <= maxQuantity ? value : maxQuantity;	
 			persistQuantityInLocalStorage(product_id,value)
 			reflectQuantityOnDiv(container ,value);
 			reflectSubTotalAndTotalItems();
@@ -461,6 +463,7 @@ function storeCartItemsInLocalStorage ( item ) {
 
 
 $('#checkOutBtn').click(function(e){
+	    e.preventDefault();
 		const cart = !localStorage.getItem( "cart" ) ? [] : JSON.parse( localStorage.getItem( "cart" ) );  
 		if(cart.length > 0){
 			$.ajaxSetup({contentType : "application/json"});
@@ -469,7 +472,7 @@ $('#checkOutBtn').click(function(e){
 			$.post(url,JSON.stringify(payload))
 			.done(function(response){
 				if(response['operationResult']=== "SUCCESS"){
-					window.location.href = `${window.location.origin}/e-shop/`;
+					window.location.href = `${window.location.origin}/e-shop/shipping`;
 				}else{
 					console.log('An Error Occured')
 				}

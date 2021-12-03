@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.eshop.project.api.entities.CartItem;
+import com.eshop.project.api.entities.User;
 import com.eshop.project.api.repository.CartItemRepository;
 import com.eshop.project.api.services.CartItemService;
 
@@ -18,6 +19,11 @@ public class CartItemServiceImpl implements CartItemService {
 	public List<CartItem> saveAllItems(List<CartItem> cartitems) {
 		List<CartItem> savedItems = cartItemRepository.saveAll(cartitems);
 		return savedItems;
+	}
+
+	@Override
+	public List<CartItem> findByUser(User user) {
+		return cartItemRepository.findByUser(user);
 	}
 
 }

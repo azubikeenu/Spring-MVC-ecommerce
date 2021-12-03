@@ -1,0 +1,108 @@
+<html xmlns:th="http://www.thymeleaf.com">
+<head th:replace="fragments::html_head"> 
+</head>
+<body>
+ <nav th:replace="fragments::menu"> </nav>
+           
+<div class="main">
+             <div class="container py-5">
+            <h3 class="font-weight-bold">ORDER DETAILS </h3>
+            <div class="row">
+                <div class="col-md-7 mr-5">
+                    <div class="row item-hl">
+                        <div class="p-1">
+                            <h4 class="text-muted">Shipping</h4>
+                        </div>
+                        <div class="p-1">
+                            <p><span sec:authentication="principal.fullName"></span></p>
+                        </div>
+                        <div class="p-1">
+                            <p><span sec:authentication="principal.username"></span></p>
+                        </div>
+                        <div class="p-1">
+                            <p>[[${checkoutInfo.shippingDetails.address}]]</p>
+                        </div>
+                    </div>
+                    <div class="row item-hl">
+                        <div class="p-3">
+                            <h4 class="text-muted">CART ITEMS</h4>
+                        </div>
+                        <th:block th:each=" item : ${cartItems}">
+                        <div class="p-1 font-weight-bold">
+                            <div class="row item-hl">
+                                <div class="col-md-2"><img th:src="@{${item.product.imagePath}}" alt=""
+                                        class="img-fluid align-self-end" width="50px" height="50px"></div>
+                                <div class="col-md-7 "> <strong>[[${item.product.name}]]</strong>
+                                </div>
+                                <div class="col-md-3"><span>&#163;</span> [[${item.product.price}]] &times; [[${item.quantity}]]</div>
+                            </div>
+                        </div>
+                        
+                        </th:block>
+                 
+
+                    </div>
+
+                </div>
+                <div class="col-md-3">
+
+                    <div class="row ">
+                        <div class="col action-item ">
+                            <h3>order summary</h3>
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col action-item " style="border-right: none; border-top: none;">Items </div>
+                        <div class="col action-item" style="border-left: none; border-top: none;"><span>&#163;</span>[[${checkoutInfo.subtotal}]]</div>
+                    </div>
+                    <div class="row ">
+                        <div class="col action-item " style="border-right: none; border-top: none;">Shipping </div>
+                        <div class="col action-item" style="border-left: none; border-top: none;"><span>&#163;</span>[[${checkoutInfo.shipping}]]</div>
+                    </div>
+                    <div class="row ">
+                        <div class="col action-item " style="border-right: none; border-top: none;">Tax </div>
+                        <div class="col action-item" style="border-left: none; border-top: none;"><span>&#163;</span>[[${checkoutInfo.tax}]]</div>
+                    </div>
+                    <div class="row ">
+                        <div class="col action-item " style="border-right: none; border-top: none;">Total </div>
+                        <div class="col action-item" style="border-left: none; border-top: none;"><span>&#163;</span>[[${checkoutInfo.total}]]</div>
+                    </div>
+                    <div class="row ">
+                        <div class="col action-item " style="border-top: none;">
+                            <form action="" method="post">
+                                <legend class="mt-4">Select payment method</legend>
+                                <div class="form-check mb-3">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" name="optionsRadios"
+                                            id="optionsRadios1" value="option1" checked="">
+                                        DEBIT CARD
+                                    </label>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" name="optionsRadios"
+                                            id="optionsRadios1" value="option1" checked="">
+                                        COD
+                                    </label>
+                                </div>
+                                <button class="btn btn-primary btn-block"> MAKE ORDER</button>
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!--FOOTER-->
+    <footer th:replace="fragments::footer"></footer>
+
+    <div th:replace="fragments::scripts"></div>
+</body>
+
+</html>

@@ -1,0 +1,22 @@
+<html xmlns:th="http://www.thymeleaf.com">
+<head th:replace="fragments::html_head"> 
+</head>
+<body>
+ <nav th:replace="fragments::menu"> </nav>
+           
+<div class="main">
+    <div class="container py-5">
+           <div class="col-md-6 offset-md-3 text-center" >
+               <p class="display-4">Your order  has been successfully placed 🛒  check your profile to view details </p>
+                      <a  th:href="@{/}" class="btn btn-info"> CONTINUE SHOPPING</a>
+           </div>
+         </div>
+    </div>
+
+    <!--FOOTER-->
+    <footer th:replace="fragments::footer"></footer>
+
+    <div th:replace="fragments::scripts"></div>
+</body>
+
+</html>

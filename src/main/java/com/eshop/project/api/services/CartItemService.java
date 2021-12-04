@@ -10,4 +10,6 @@ public interface CartItemService {
 
 	List<CartItem> findByUser(User user);
 
+	public void deleteByUser(User user);
+
 }

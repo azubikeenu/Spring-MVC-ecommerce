@@ -472,7 +472,8 @@ $('#checkOutBtn').click(function(e){
 			$.post(url,JSON.stringify(payload))
 			.done(function(response){
 				if(response['operationResult']=== "SUCCESS"){
-					window.location.href = `${window.location.origin}/e-shop/shipping`;
+					window.location.href = `${window.location.origin}/e-shop/checkout`;
+					localStorage.setItem("cart",JSON.stringify( [] ) );
 				}else{
 					console.log('An Error Occured')
 				}

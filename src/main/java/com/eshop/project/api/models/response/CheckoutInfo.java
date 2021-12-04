@@ -53,4 +53,10 @@ public class CheckoutInfo {
 		this.shippingDetails = shippingDetails;
 	}
 
+	@Override
+	public String toString() {
+		return "CheckoutInfo [subtotal=" + subtotal + ", shipping=" + shipping + ", tax=" + tax + ", total=" + total
+				+ ", shippingDetails=" + shippingDetails + "]";
+	}
+
 }

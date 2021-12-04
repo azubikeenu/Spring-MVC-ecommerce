@@ -51,10 +51,8 @@ public class ShippingViewController {
 		checkoutInfo.setTax(10);
 		double total = checkoutInfo.getSubtotal() - (checkoutInfo.getShipping() + checkoutInfo.getTax());
 		checkoutInfo.setTotal(total);
-
 		model.addAttribute("checkoutInfo", checkoutInfo);
 		model.addAttribute("cartItems", cartItems);
-
 		return "check_out_summary.html";
 	}
 

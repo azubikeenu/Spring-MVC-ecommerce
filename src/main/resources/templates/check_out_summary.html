@@ -20,7 +20,7 @@
                             <p><span sec:authentication="principal.username"></span></p>
                         </div>
                         <div class="p-1">
-                            <p>[[${checkoutInfo.shippingDetails.address}]]</p>
+                            <p> <span id="address">[[${checkoutInfo.shippingDetails.address}]]</span></p>
                         </div>
                     </div>
                     <div class="row item-hl">
@@ -53,40 +53,41 @@
                     </div>
                     <div class="row ">
                         <div class="col action-item " style="border-right: none; border-top: none;">Items </div>
-                        <div class="col action-item" style="border-left: none; border-top: none;"><span>&#163;</span>[[${checkoutInfo.subtotal}]]</div>
+                        <div class="col action-item" style="border-left: none; border-top: none;"><span>&#163;</span><span id="subtotal">[[ ${#numbers.formatDecimal(checkoutInfo.subtotal,1,2)}]]</span></div>
                     </div>
                     <div class="row ">
                         <div class="col action-item " style="border-right: none; border-top: none;">Shipping </div>
-                        <div class="col action-item" style="border-left: none; border-top: none;"><span>&#163;</span>[[${checkoutInfo.shipping}]]</div>
+                        <div class="col action-item" style="border-left: none; border-top: none;"><span>&#163;</span><span id="shipping">[[${checkoutInfo.shipping}]]</span></div>
                     </div>
                     <div class="row ">
                         <div class="col action-item " style="border-right: none; border-top: none;">Tax </div>
-                        <div class="col action-item" style="border-left: none; border-top: none;"><span>&#163;</span>[[${checkoutInfo.tax}]]</div>
+                        <div class="col action-item" style="border-left: none; border-top: none;"><span>&#163;</span><span id ="tax">[[${checkoutInfo.tax}]]</span></div>
                     </div>
                     <div class="row ">
                         <div class="col action-item " style="border-right: none; border-top: none;">Total </div>
-                        <div class="col action-item" style="border-left: none; border-top: none;"><span>&#163;</span>[[${checkoutInfo.total}]]</div>
+                        <div class="col action-item" style="border-left: none; border-top: none;"><span>&#163;</span><span id="total">[[${#numbers.formatDecimal(checkoutInfo.total,1,2)}]]</span></div>
                     </div>
                     <div class="row ">
                         <div class="col action-item " style="border-top: none;">
-                            <form action="" method="post">
+                       
                                 <legend class="mt-4">Select payment method</legend>
                                 <div class="form-check mb-3">
                                     <label class="form-check-label">
-                                        <input type="radio" class="form-check-input" name="optionsRadios"
-                                            id="optionsRadios1" value="option1" checked="">
+                                        <input type="radio" class="form-check-input" name="paymentMethod"
+                                            id="optionsRadios1" value="debitCard">
                                         DEBIT CARD
                                     </label>
+                                   
                                 </div>
                                 <div class="form-check mb-3">
                                     <label class="form-check-label">
-                                        <input type="radio" class="form-check-input" name="optionsRadios"
-                                            id="optionsRadios1" value="option1" checked="">
+                                        <input type="radio" class="form-check-input" name="paymentMethod"
+                                            id="cashOnDelivery" value="cashOnDelivery" >
                                         COD
                                     </label>
                                 </div>
-                                <button class="btn btn-primary btn-block"> MAKE ORDER</button>
-                            </form>
+                                <button class="btn btn-primary btn-block makeOrder"> MAKE ORDER</button>
+                        
 
                         </div>
 

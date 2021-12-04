@@ -1,0 +1,55 @@
+<html xmlns:th="http://www.thymeleaf.com">
+<head th:replace="fragments::html_head"> 
+</head>
+<body>
+ <nav th:replace="fragments::menu"> </nav>
+           
+<div class="main">
+        <!----PLACE CONTENT HEHE-->
+                <div class="container py-5">
+            <h3>ORDERS</h3>       
+            <table class="table table-striped table-bordered table-sm">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th> First Name</th>
+                        <th>Last Name</th>
+                        <th>Order Date</th>
+                        <th>Payment status</th>
+                         <th>Delivery Status</th>
+                         <th>Total</th>
+                        <th>ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                      <tr th:each="order : ${orders}">
+                        <th scope="row">[[${order.orderId}]]</th>
+                        <td>[[${order.firstName}]]</td>
+                        <td>[[${order.lastName}]]</td>
+                        <td>[[${#dates.format(order.orderTime, 'dd-MM-yyyy')}]]</td>
+                          <td class="text-center" th:switch="${order.paymentStatus}">
+                            <i class="fas fa-check" th:case=true></i>
+                            <i class="fas fa-times" th:case=false></i>
+                        </td>
+                        <td  > <span class="badge rounded-pill bg-info">[[${order.orderStatus}]]</span></td>
+                        <td>[[${order.total}]]</td>
+                        <td>
+                            <a th:href="@{'/orders/' + ${order.orderId}}" class="btn btn-warning btn-sm"><i class="fas fa-eye"></i></a>
+                             <a href="#" class="btn btn-light btn-sm"><i class="fas fa-edit"></i></a>
+                                <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    <!--FOOTER-->
+    <footer th:replace="fragments::footer"></footer>
+
+    <div th:replace="fragments::scripts"></div>
+</body>
+
+</html>

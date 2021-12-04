@@ -1,0 +1,112 @@
+<html xmlns:th="http://www.thymeleaf.com">
+<head th:replace="fragments::html_head"> 
+</head>
+<body>
+ <nav th:replace="fragments::menu"> </nav>
+           
+<div class="main">
+        <!----PLACE CONTENT HEHE-->
+                <div class="container py-5">
+                <a sec:authorize="hasAuthority('ADMIN')" class="btn btn-primary text-light mb-2" th:href="@{/admin/orders}"> VIEW ORDERS</a>
+            <h3 class="font-weight-bold">ORDER :[[${order.orderId}]] </h3>
+            <div class="row">
+                <div class="col-md-7 mr-5">
+                    <div class="row item-hl">
+                        <div class="p-1">
+                            <h4 class="text-muted">Shipping</h4>
+                        </div>
+                        <div class="p-1">
+                            <p>Name : [[${order.firstName}]]</p>
+                        </div>
+                        <div class="p-1">
+                            <p>Email :[[${order.email}]] </p>
+                        </div>
+                        <div class="p-1">
+                            <p>Address :  [[${order.address}]] </p>
+                        </div>
+                        <div class="alert alert-info">
+                            <strong> [[${order.orderStatus}]] </strong>
+                        </div>
+                    </div>
+                    <div class="row item-hl">
+                        <div class="p-1">
+                            <h4 class="text-muted">PAYMENT</h4>
+                        </div>
+                     
+                        <div class="p-1">
+                            <p>Payment method :Paypal</p>
+                        </div>
+                        <th:block th:switch="${order.paymentStatus}" >
+                        <div th:case=false class="alert alert-danger">
+                            <strong>Not Paid</strong>
+                        </div>
+                        <div th:case=true class="alert alert-success">
+                            <strong>Paid</strong>
+                        </div>
+                        </th:block>
+                        
+                    </div>
+                    <div class="row item-hl">
+                        <div class="p-3">
+                            <h4 class="text-muted">ORDER ITEMS</h4>
+                        </div>
+                   <th:block th:each="item:${order.orderDetails}">
+                    <div class="p-1 font-weight-bold">
+                        <div class="row item-hl">
+                            <div class="col-md-2"><img th:src="@{${item.product.imagePath}}" alt="" class="img-fluid align-self-end"
+                                    width="50px" height="50px"></div>
+                            <div class="col-md-7 "> <strong>[[${item.product.name}]]</strong>
+                            </div>
+                            <div class="col-md-3"><span>&#163;</span> [[${item.product.price}]] &times; [[${item.quantity}]]</div>
+                        </div>
+                    </div>
+                    </th:block>
+                   
+
+                    </div>
+
+                </div>
+                <div class="col-md-3">
+
+                    <div class="row ">
+                        <div class="col action-item ">
+                            <h3>order summary</h3>
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col action-item " style="border-right: none; border-top: none;">Items </div>
+                        <div class="col action-item" style="border-left: none; border-top: none;"> <span>&#163;</span> [[${order.total-(10+order.tax)}]]</div>
+                    </div>
+                    <div class="row ">
+                        <div class="col action-item " style="border-right: none; border-top: none;">Shipping </div>
+                        <div class="col action-item" style="border-left: none; border-top: none;"> <span>&#163;</span>10</div>
+                    </div>
+                    <div class="row ">
+                        <div class="col action-item " style="border-right: none; border-top: none;">Tax </div>
+                        <div class="col action-item" style="border-left: none; border-top: none;"><span>&#163;</span>12</div>
+                    </div>
+                    <div class="row ">
+                        <div class="col action-item " style="border-right: none; border-top: none;">Total </div>
+                        <div class="col action-item" style="border-left: none; border-top: none;"><span>&#163;</span> [[${order.total}]]</div>
+                    </div>
+                    <div class="row ">
+                        <div th:if= "${order.paymentStatus == false}"class="col action-item " style="border-top: none;">
+                            <a th:href ="@{/orders/show_card}" class="btn btn-primary btn-block"><i class="fas fa-credit-card m-3"></i> PAY WITH DEBIT CARD</a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!--FOOTER-->
+    <footer th:replace="fragments::footer"></footer>
+
+    <div th:replace="fragments::scripts"></div>
+</body>
+
+</html>

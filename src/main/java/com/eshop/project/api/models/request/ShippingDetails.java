@@ -38,4 +38,10 @@ public class ShippingDetails {
 		this.country = country;
 	}
 
+	@Override
+	public String toString() {
+		return "ShippingDetails [address=" + address + ", city=" + city + ", postalCode=" + postalCode + ", country="
+				+ country + "]";
+	}
+
 }

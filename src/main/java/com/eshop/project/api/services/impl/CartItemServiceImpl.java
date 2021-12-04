@@ -26,4 +26,10 @@ public class CartItemServiceImpl implements CartItemService {
 		return cartItemRepository.findByUser(user);
 	}
 
+	@Override
+	public void deleteByUser(User user) {
+		cartItemRepository.deleteByCustomer(user);
+
+	}
+
 }

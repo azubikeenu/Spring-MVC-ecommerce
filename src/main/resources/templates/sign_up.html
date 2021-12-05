@@ -6,13 +6,13 @@
            
 <div class="main">
         <!----PLACE CONTENT HEHE-->
-               <div class="container py-5">
-
+                <div class="container py-5">
+             
             <div class="row">
                 <div class="col-md-6 offset-md-3">
-                    <h3>Create User</h3>
-                    <form th:action="@{/admin/users/save}" method="POST" th:object="${user}" id="createUser">
-                        <div class="form-group">
+                    <h3>Sign up</h3>
+                    <form th:action="@{/signup}" method="POST" th:object="${user}" id="signUp">
+                       <div class="form-group">
                             <label for="name">First Name</label>
                             <input class="form-control" name="firstName" type="text" id="firstName"  th:field = "*{firstName}"
                              placeholder="Enter First Name" required data-parsley-pattern="^[A-Za-z]+$" data-parsley-trigger ="focusout">
@@ -30,33 +30,27 @@
                             >
 
                         </div>
-                          <div class="form-group row  m-3">
-            	<label class="col-sm-4 col-form-label">Roles</label> 
-            	<div class="col-sm-8">
-            	  <th:block th:each ="role : ${roles}">
-            	    <input type="checkbox" th:field ="*{roles}" th:text="${role.name}" th:value= "${role.id}" class="m-2"/>
-            	    -<small>[[${role.description}]]</small> <br/>
-            	  </th:block>
-            	</div>
-            	</div>
-                        
                         <div class="form-group">
                             <label for="name">Password</label>
                             <input class="form-control" type="password" id="password" 
-                            th:field ="*{password}" placeholder="Enter Password" required
+                            th:field ="*{password}" placeholder="Leave blank if you dont want to update password" data-parsley-required="false"
                             data-parsley-length="[6,16]" data-parsley-trigger="focusout"
                            />
                         </div>
                         
-               <div class="form-group row  ">
-            	<label class="col-sm-4 col-form-label">isActive</label> 
-            	<div class="col-sm-8 mt-3">
-            	<input type="checkbox"  th:field="*{active}"/>
-            	</div>
-            	</div>
+                        <div class="form-group">
+                            <label for="name">Confirm password</label>
+                            <input class="form-control" type="password" id="passwordConfirm" 
+                             placeholder="Confirm password" data-parsley-required="false"
+                            data-parsley-length="[6,16]" data-parsley-trigger="focusout"
+                            data-parsley-equalto="#password" data-parsley-error-message ="Passwords must match"
+                           />
+                        </div>
+                        <button class="btn btn-primary">SIGN UP</button>
+                        <div class="pt-3">
+                            Already have an account ? <a th:href="@{/login}"> Login Here</a>
+                        </div>
 
-                        <button class="btn btn-primary">CREATE USER</button>
-                        <a th:href="@{/admin/users}" class="btn btn-info mr-5">CANCEL </a>
 
                     </form>
 

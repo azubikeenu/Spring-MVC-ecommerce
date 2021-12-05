@@ -7,6 +7,9 @@
 <div class="main">
   
   <div class="container py-5">
+  <div th:if="${message!=null}" class="alert alert-success text-center">
+               <strong>[[${message}]]</strong>
+            </div>
   
    <div class="col-md-6 offset-md-3 alert alert-danger mb-3 text-center" th:if="${param.error}">
      		[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]
@@ -25,7 +28,7 @@
                         </div>
                         <button class="btn btn-primary">SIGN IN</button>
                         <div class="pt-3">
-                            New Customer ? <a th:href="@{/register}"> Register Here</a>
+                            New Customer ? <a th:href="@{/signup}"> Register Here</a>
                         </div>
 
 

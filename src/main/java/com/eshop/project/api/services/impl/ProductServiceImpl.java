@@ -99,4 +99,9 @@ public class ProductServiceImpl implements ProductService {
 		return productRepository.findAll(pageable);
 	}
 
+	@Override
+	public List<Product> filterProductByName(String keyword) {
+		return productRepository.filterProductByName(keyword);
+	}
+
 }

@@ -28,7 +28,7 @@ public class Product {
 	private boolean inStock;
 	@Column(columnDefinition = "boolean default true")
 	private boolean enabled;
-	@Column(columnDefinition = "int default 1")
+	@Column(columnDefinition = "int default 0")
 	private int quantity;
 	@Column
 	private double price;

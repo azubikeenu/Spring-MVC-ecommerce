@@ -1,18 +1,42 @@
 package com.eshop.project.api.models.request;
 
 public class OrderRequestDetails {
-	private String subtotal;
+	private String firstName;
+	private String lastName;
+	private String orderStatus;
+	private boolean paymentStatus;
 	private String address;
-	private String paymentMethod;
-	private String total;
-	private String shipping;
 
-	public String getSubtotal() {
-		return subtotal;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setSubtotal(String subtotal) {
-		this.subtotal = subtotal;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getOrderStatus() {
+		return orderStatus;
+	}
+
+	public void setOrderStatus(String orderStatus) {
+		this.orderStatus = orderStatus;
+	}
+
+	public boolean isPaymentStatus() {
+		return paymentStatus;
+	}
+
+	public void setPaymentStatus(boolean paymentStatus) {
+		this.paymentStatus = paymentStatus;
 	}
 
 	public String getAddress() {
@@ -21,30 +45,6 @@ public class OrderRequestDetails {
 
 	public void setAddress(String address) {
 		this.address = address;
-	}
-
-	public String getPaymentMethod() {
-		return paymentMethod;
-	}
-
-	public void setPaymentMethod(String paymentMethod) {
-		this.paymentMethod = paymentMethod;
-	}
-
-	public String getTotal() {
-		return total;
-	}
-
-	public void setTotal(String total) {
-		this.total = total;
-	}
-
-	public String getShipping() {
-		return shipping;
-	}
-
-	public void setShipping(String shipping) {
-		this.shipping = shipping;
 	}
 
 }

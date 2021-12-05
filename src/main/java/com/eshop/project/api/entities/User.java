@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -40,6 +42,9 @@ public class User implements Serializable {
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private Set<Order> orders = new HashSet<>();
 
 	public long getId() {
 		return id;
@@ -107,6 +112,14 @@ public class User implements Serializable {
 
 	public void addRole(Role role) {
 		this.roles.add(role);
+	}
+
+	public Set<Order> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(Set<Order> orders) {
+		this.orders = orders;
 	}
 
 }

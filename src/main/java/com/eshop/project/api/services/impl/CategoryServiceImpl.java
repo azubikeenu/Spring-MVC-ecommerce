@@ -87,4 +87,13 @@ public class CategoryServiceImpl implements CategoryService {
 		return categoryRepository.findAllActiveCategories();
 	}
 
+	@Override
+	public Category findCategoryByAlias(String alias) {
+		Category foundCategory = categoryRepository.findByAlias(alias);
+		if (foundCategory == null)
+			throw new CategoryServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessages());
+		return foundCategory;
+
+	}
+
 }

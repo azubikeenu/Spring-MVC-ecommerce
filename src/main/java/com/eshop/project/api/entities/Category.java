@@ -1,5 +1,6 @@
 package com.eshop.project.api.entities;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -31,7 +32,7 @@ public class Category {
 	private boolean enabled;
 
 	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-	private Set<Product> products;
+	private Set<Product> products = new HashSet<>();
 
 	public long getId() {
 		return id;
@@ -79,6 +80,14 @@ public class Category {
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	public Set<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(Set<Product> products) {
+		this.products = products;
 	}
 
 }

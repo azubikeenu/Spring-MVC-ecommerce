@@ -1,0 +1,104 @@
+<html xmlns:th="http://www.thymeleaf.com">
+<head th:replace="fragments::html_head"> 
+</head>
+<body>
+ <nav th:replace="fragments::menu"> </nav>
+           
+<div class="main">
+           <div class="container py-5">
+            <div class="row">
+                <div class="col-md-3">
+                    <h4>User Profile</h4>
+                    <form th:action="@{/public_profile/update}" method="POST" th:object="${user}" id="updateProfile">
+                        <div class="form-group">
+                            <label for="name">First Name</label>
+                            <input class="form-control" name="firstName" type="text" id="firstName"  th:field = "*{firstName}"
+                             placeholder="Enter First Name" required data-parsley-pattern="^[A-Za-z]+$" data-parsley-trigger ="focusout">
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Last Name</label>
+                            <input class="form-control" type="text" id="lastName" th:field ="*{lastName}"  placeholder="Enter Last Name" required
+                            data-parsley-pattern="^[A-Za-z]+$" data-parsley-trigger ="focusout"
+                            >
+                        </div>
+                       <div class="form-group">
+                            <label for="name">Email</label>
+                            <input class="form-control" type="email" id="email" th:field ="*{email}" placeholder="Enter Email " readonly
+                             />
+                           </div>
+                        <div class="form-group">
+                            <label for="name">Password</label>
+                            <input class="form-control" type="password" id="password" 
+                            th:field ="*{password}" placeholder="Leave blank if you dont want to update password" data-parsley-required="false"
+                            data-parsley-length="[6,16]" data-parsley-trigger="focusout"
+                           />
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="name">Confirm password</label>
+                            <input class="form-control" type="password" id="passwordConfirm" 
+                             placeholder="Confirm password" data-parsley-required="false"
+                            data-parsley-length="[6,16]" data-parsley-trigger="focusout"
+                            data-parsley-equalto="#password" data-parsley-error-message ="Passwords must match"
+                           />
+                        </div>
+                        
+               <div class="form-group row  ">
+            	<label class="col-sm-4 col-form-label"> uncheck to disable account ?</label> 
+            	<div class="col-sm-8 mt-3">
+            	<input type="checkbox"  th:field="*{active}"/>
+            	</div>
+            		<small class="text-warning">[This disables the user account]*</small>
+            	</div>
+                        <button class="btn btn-primary btn-sm">UPDATE PROFILE</button>
+                        <a th:href="@{/}" class="btn btn-info  btn-sm mr-3">CANCEL </a>
+
+                    </form>
+                </div>
+
+                <div class="col-md-9">
+                    <h4>Your orders</h4>
+                    <table class="table table-sm table-striped table-bordered font-weight-bold">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>DATE</th>
+                                <th>Total(<span>&#163;</span>)</th>
+                                <th>PAID</th>
+                                <th>DILVERY STATUS</th>
+                                <th>VIEW DETAILS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                             <tr th:each="order : ${orders}">
+                              <th scope="row">[[${order.orderId}]]</th>
+                              <td>[[${#dates.format(order.orderTime, 'dd-MM-yyyy')}]]</td>
+                                <td>[[${order.total}]]</td>
+                                <td class="text-center"  th:switch="${order.paymentStatus}">
+                            <i class="fas fa-check" th:case=true></i>
+                            <i class="fas fa-times" th:case=false></i>
+                        </td>
+                        <td  > <span class="badge rounded-pill bg-info">[[${order.orderStatus}]]</span></td>
+                         <td>
+                            <a th:href="@{'/orders/' + ${order.orderId}}" class="btn btn-warning btn-sm"><i class="fas fa-eye"></i></a>
+                            
+                        </td>
+                            </tr>
+                         
+                       
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--FOOTER-->
+    <footer th:replace="fragments::footer"></footer>
+
+    <div th:replace="fragments::scripts"></div>
+</body>
+
+</html>

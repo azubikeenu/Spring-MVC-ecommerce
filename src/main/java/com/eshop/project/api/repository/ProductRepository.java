@@ -19,6 +19,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
 	Product findByName(String name);
 
+	@Query("SELECT p from Product p WHERE p.name LIKE %:keyword%")
+	List<Product> filterProductByName(String keyword);
+
 //	@Query("SELECT p from Product p WHERE p.name LIKE %:keyword% OR p.category.name LIKE %:keyword%")
 //	Page<Product> findAll(String keyword, Pageable pageable);
 }

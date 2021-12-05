@@ -1,4 +1,4 @@
-<html xmlns:th="http://www.thymeleaf.com">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head th:replace="fragments::html_head"> 
 </head>
 <body>
@@ -7,7 +7,11 @@
 <div class="main">
         <!----PLACE CONTENT HEHE-->
                 <div class="container py-5">
+            <div th:if="${message!=null}" class="alert alert-success text-center">
+               <strong>[[${message}]]</strong>
+            </div>
                 <a sec:authorize="hasAuthority('ADMIN')" class="btn btn-primary text-light mb-2" th:href="@{/admin/orders}"> VIEW ORDERS</a>
+                <a sec:authorize="hasAuthority('USER')" class="btn btn-primary text-light mb-2" th:href="@{/user/profile}"> VIEW PROFILE</a>
             <h3 class="font-weight-bold">ORDER :[[${order.orderId}]] </h3>
             <div class="row">
                 <div class="col-md-7 mr-5">
@@ -16,7 +20,7 @@
                             <h4 class="text-muted">Shipping</h4>
                         </div>
                         <div class="p-1">
-                            <p>Name : [[${order.firstName}]]</p>
+                            <p>Name : [[${order.firstName}]]  [[${order.lastName}]]</p>
                         </div>
                         <div class="p-1">
                             <p>Email :[[${order.email}]] </p>
@@ -34,7 +38,7 @@
                         </div>
                      
                         <div class="p-1">
-                            <p>Payment method :Paypal</p>
+                            <p>Payment method : [[${order.paymentMethod}]]</p>
                         </div>
                         <th:block th:switch="${order.paymentStatus}" >
                         <div th:case=false class="alert alert-danger">
@@ -75,7 +79,7 @@
                     </div>
                     <div class="row ">
                         <div class="col action-item " style="border-right: none; border-top: none;">Items </div>
-                        <div class="col action-item" style="border-left: none; border-top: none;"> <span>&#163;</span> [[${order.total-(10+order.tax)}]]</div>
+                        <div class="col action-item" style="border-left: none; border-top: none;"> <span>&#163;</span> [[${#numbers.formatDecimal(order.total-(10+order.tax),1,2)}]]</div>
                     </div>
                     <div class="row ">
                         <div class="col action-item " style="border-right: none; border-top: none;">Shipping </div>
@@ -87,12 +91,14 @@
                     </div>
                     <div class="row ">
                         <div class="col action-item " style="border-right: none; border-top: none;">Total </div>
-                        <div class="col action-item" style="border-left: none; border-top: none;"><span>&#163;</span> [[${order.total}]]</div>
+                        <div class="col action-item" style="border-left: none; border-top: none;"><span>&#163;</span> [[${#numbers.formatDecimal(order.total,1,2)}]]</div>
                     </div>
                     <div class="row ">
-                        <div th:if= "${order.paymentStatus == false}"class="col action-item " style="border-top: none;">
-                            <a th:href ="@{/orders/show_card}" class="btn btn-primary btn-block"><i class="fas fa-credit-card m-3"></i> PAY WITH DEBIT CARD</a>
+                        <div th:if= "${order.paymentStatus == false && !order.isCancelled }"class="col action-item " style="border-top: none;">
+                            <a th:href="@{'/orders/confirm_payment/' + ${order.orderId}}" class="btn btn-primary btn-block text-light mb-3" ><i class="fas fa-credit-card m-3"></i> PAY WITH DEBIT CARD</a>
+                              <a sec:authorize="hasAuthority('USER')"  th:href="@{'/orders/cancel_order/' + ${order.orderId}}" class="btn btn-warning btn-block">CANCEL ORDER</a>
                         </div>
+                        
 
                     </div>
 
@@ -102,7 +108,7 @@
 
         </div>
     </div>
-
+ 
     <!--FOOTER-->
     <footer th:replace="fragments::footer"></footer>
 

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.eshop.project.api.entities.CartItem;
+import com.eshop.project.api.entities.Order;
 import com.eshop.project.api.entities.User;
 import com.eshop.project.api.models.request.PAYMENT_METHOD;
 import com.eshop.project.api.models.request.ShippingDetails;
@@ -54,9 +55,9 @@ public class CheckoutViewController {
 		User user = userService.getUserByEmail(email);
 		List<CartItem> cartItems = cartItemService.findByUser(user);
 
-		orderService.createOrder(user, shippingDetails, payMethod, cartItems);
-
-		return "order_confirmation";
+		Order createOrder = orderService.createOrder(user, shippingDetails, payMethod, cartItems);
+		String orderId = createOrder.getOrderId();
+		return "redirect:/orders/" + orderId;
 	}
 
 	@GetMapping("/cancel_order")

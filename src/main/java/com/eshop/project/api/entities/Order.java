@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -54,6 +55,9 @@ public class Order {
 
 	@Enumerated(EnumType.STRING)
 	private ORDER_STATUS orderStatus;
+
+	@Column(columnDefinition = "boolean default false")
+	private boolean cancelled;
 
 	public long getId() {
 		return id;
@@ -173,6 +177,14 @@ public class Order {
 
 	public void setOrderStatus(ORDER_STATUS orderStatus) {
 		this.orderStatus = orderStatus;
+	}
+
+	public boolean isCancelled() {
+		return cancelled;
+	}
+
+	public void setCancelled(boolean cancelled) {
+		this.cancelled = cancelled;
 	}
 
 }

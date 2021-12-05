@@ -17,7 +17,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.eshop.project.api.entities.Role;
 import com.eshop.project.api.entities.User;
 import com.eshop.project.api.models.response.UserResponse;
-import com.eshop.project.api.repository.UserRepository;
 import com.eshop.project.api.services.RoleService;
 import com.eshop.project.api.services.UserService;
 import com.eshop.project.api.shared.utils.Utils;
@@ -30,8 +29,6 @@ public class UserViewController {
 	@Autowired
 	private RoleService roleService;
 
-	@Autowired
-	private UserRepository userRepository;
 	@Autowired
 	private Utils utils;
 
@@ -69,7 +66,7 @@ public class UserViewController {
 	public String saveUser(User user, RedirectAttributes redirectAttributes) {
 		user.setUserId(utils.generateRandomUserId(30));
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
-		userRepository.save(user);
+		userService.saveUser(user);
 		redirectAttributes.addFlashAttribute("message", "USER HAS BEEN SAVED SUCCESSULLY");
 		return "redirect:/admin/users";
 	}

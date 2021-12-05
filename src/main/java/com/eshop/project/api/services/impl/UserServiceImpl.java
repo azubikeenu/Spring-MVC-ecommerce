@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.eshop.project.api.entities.Order;
 import com.eshop.project.api.entities.Role;
 import com.eshop.project.api.entities.User;
 import com.eshop.project.api.exceptions.UserServiceException;
@@ -135,6 +136,17 @@ public class UserServiceImpl implements UserService {
 
 		User updatedUser = userRepository.save(persistedUser);
 		return updatedUser;
+	}
+
+	@Override
+	public Set<Order> getAllOrders(String userId) {
+		User foundUser = userRepository.findByUserId(userId);
+		return foundUser.getOrders();
+	}
+
+	@Override
+	public User saveUser(User user) {
+		return userRepository.save(user);
 	}
 
 }

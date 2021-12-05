@@ -25,4 +25,6 @@ public interface ProductService {
 
 	Page<Product> listByPage(int pageNumb);
 
+	List<Product> filterProductByName(String keyword);
+
 }

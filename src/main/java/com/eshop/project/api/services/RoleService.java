@@ -7,4 +7,6 @@ import com.eshop.project.api.entities.Role;
 public interface RoleService {
 	List<Role> findAllRoles();
 
+	Role findByName(String name);
+
 }

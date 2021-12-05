@@ -26,9 +26,11 @@ public class ProjectSecurity extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable().authorizeRequests().mvcMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
-				.authenticated().and().formLogin().loginPage("/login").usernameParameter("email").permitAll().and()
-				.logout().logoutSuccessUrl("/login");
+		http.csrf().disable().authorizeRequests().mvcMatchers("/admin/**").hasAuthority("ADMIN")
+				.mvcMatchers("/", "/login", "/signup", "/products/**", "/cart/**", "/category/**", "/search",
+						"/product-images/**", "/api/check_email")
+				.permitAll().anyRequest().authenticated().and().formLogin().loginPage("/login")
+				.usernameParameter("email").permitAll().and().logout().logoutSuccessUrl("/");
 
 //		http.authorizeRequests().mvcMatchers("/admin/**").hasAuthority("ADMIN").anyRequest().authenticated().and()
 //				.formLogin().and().httpBasic();

@@ -21,4 +21,6 @@ public interface CategoryService {
 	Category isNameUnique(String name);
 
 	List<Category> findAllActiveCategories();
+
+	Category findCategoryByAlias(String alias);
 }

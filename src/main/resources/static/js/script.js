@@ -6,16 +6,16 @@ $(function() {
 	$('#createProductForm').parsley();
 	$('#productEditForm').parsley();
 	$('#checkOut').parsley();
+	$('#cardPaymentForm').parsley();
+	$('#signUp').parsley();
+	$('#shippingForm').parsley();
 	
-	
-	
-	
-	
+		
 	//////////------------USERS ---------------////////////
 	window.ParsleyValidator.addValidator('checkemail', {
 		validateString: function(value) {
 			
-			const url = `${window.location.origin}/e-shop/api/admin/users/check_email`;
+			const url = `${window.location.origin}/e-shop/api/check_email`;
 			console.log(url);
 			const _csrf = $("input[name= '_csrf']").val()
 			params = { email, _csrf }
@@ -357,7 +357,7 @@ function storeCartItemsInLocalStorage ( item ) {
 						`
 					  <div class="row ">
                         <div class="col action-item text-center ">
-							<h3>Subtotal :<span>&#163;</span><span id="subTotal">${subTotal}</span></h3>
+							<h3>Subtotal :<span>&#163;</span><span id="subTotal">${subTotal.toFixed(2)}</span></h3>
                             <p class="lead">Total Items : <span id="totalItems"> ${totalItems}</span> item(s)<p>                       
                         </div>
                     </div>
@@ -475,7 +475,7 @@ $('#checkOutBtn').click(function(e){
 					window.location.href = `${window.location.origin}/e-shop/checkout`;
 					localStorage.setItem("cart",JSON.stringify( [] ) );
 				}else{
-					console.log('An Error Occured')
+				   window.location.href=`${window.location.origin}/e-shop/login`
 				}
 			})
 
@@ -483,6 +483,79 @@ $('#checkOutBtn').click(function(e){
 			
 	})
 	
+//////----------ORDERS ----------------///////////////////////
+	
+	$('.editOrder').on('click', function(e) {
+		e.preventDefault();
+	    const {id} = e.target.dataset;
+		const url = `${window.location.origin}/e-shop/api/admin/orders/${id}`;
+		$.get(url,function(data,status){
+			
+			$("#firstNameEdit").val(data.firstName)
+			$("#lastNameEdit").val(data.lastName);
+		    $("#lastNameEdit").val(data.lastName);
+ 			$("#orderId").val(data.orderId);
+			$(`#orderStatus option[value=${data.orderStatus.toLowerCase()}]`).attr('selected', 'selected');
+		    $("#addressEdit").text(data.address);
+			 data.paymentStatus ? $('#orderPaid').prop("checked" , true) : $('#orderPaid').prop("checked" , false); 
+	         console.log(data.orderStatus=='DELIVERED');
+		    if(data.orderStatus== "DELIVERED"|| data.orderStatus== "CANCELLED" ) $("#orderPaid").attr("disabled","disabled");
+		})
+		window.$('#orderEditModal').modal;
+
+			 
+	})
+	 $('#orderEditButton').on('click', function(e){
+			    e.preventDefault();
+				const firstName = $("#firstNameEdit").val()
+				const lastName = $("#lastNameEdit").val();
+				const address = $("#addressEdit").text();
+				const id = $("#orderId").val()
+				const paymentStatus = $('#orderPaid').prop("checked") ? true : false;
+				const orderStatus = $('#orderStatus').val()
+				let data =  { firstName,lastName,address, paymentStatus,orderStatus }
+				const ORIGIN =window.location.origin;
+				const url = `${ORIGIN}/e-shop/api/admin/orders/${id}`;
+				 fetch(url ,{
+					 method : 'PUT',
+					 headers : {
+					'Content-Type' : 'application/json'
+					},
+					body : JSON.stringify(data) 
+				}).then(response => response.json())
+				   .then(data => {
+					window.location.href =  `${ORIGIN}/e-shop/admin/orders/update/redirect`
+				})  .catch(err => console.log(err));											
+				
+			});
+			
+// DELETE ORDER 
+$('.deleteOrder').on('click', function(e){
+	 e.preventDefault();
+    const r = confirm("Are you sure you want to delete this order ?")
+    if(r){
+	
+     const {id} = e.target.dataset;
+
+  	const ORIGIN =window.location.origin;
+	const url = `${ORIGIN}/e-shop/api/admin/orders/${id}`;
+	fetch(url , {
+		method : 'DELETE',
+		headers : {
+		  'Content-Type' : 'application/json'	
+		}		
+	}).then(response => response.json())
+	   .then(data => {
+		console.log(data);
+		window.location.href =  `${ORIGIN}/e-shop/admin/orders/delete/redirect`
+	} ).catch(err => console.log(err))
+	
+	}else{
+		return false;
+	}
+	
+})
+		
 	
 		
 })

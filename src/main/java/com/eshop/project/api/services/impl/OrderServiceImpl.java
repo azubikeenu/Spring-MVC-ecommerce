@@ -12,12 +12,15 @@ import org.springframework.stereotype.Service;
 import com.eshop.project.api.entities.CartItem;
 import com.eshop.project.api.entities.Order;
 import com.eshop.project.api.entities.OrderDetails;
+import com.eshop.project.api.entities.Product;
 import com.eshop.project.api.entities.User;
 import com.eshop.project.api.models.request.ORDER_STATUS;
+import com.eshop.project.api.models.request.OrderRequestDetails;
 import com.eshop.project.api.models.request.PAYMENT_METHOD;
 import com.eshop.project.api.models.request.ShippingDetails;
 import com.eshop.project.api.repository.CartItemRepository;
 import com.eshop.project.api.repository.OrderRepository;
+import com.eshop.project.api.repository.ProductRepository;
 import com.eshop.project.api.services.OrderService;
 import com.eshop.project.api.shared.utils.Utils;
 
@@ -32,6 +35,8 @@ public class OrderServiceImpl implements OrderService {
 	private Utils utils;
 	@Autowired
 	private OrderRepository orderRepository;
+	@Autowired
+	private ProductRepository productRepository;
 
 	@Override
 	public Order createOrder(User user, ShippingDetails shippingDetails, PAYMENT_METHOD payment_METHOD,
@@ -56,16 +61,21 @@ public class OrderServiceImpl implements OrderService {
 			orderDetails.setQuantity(item.getQuantity());
 			orderDetails.setUnitPrice(item.getProduct().getPrice());
 			orderDetails.setSubTotal(item.getProduct().getPrice() * item.getQuantity());
+
+			Product product = item.getProduct();
+			product.setQuantity(product.getQuantity() - item.getQuantity());
+			if (product.getQuantity() == 0)
+				product.setInStock(false);
+			productRepository.save(product);
+
 			orderDetails.setOrder(order);
 			orderItems.add(orderDetails);
 		}
+		// get all the products and update their quantity
+
 		order.setOrderDetails(orderItems);
 		order.setPaymentMethod(payment_METHOD);
-		if (payment_METHOD.name().equals(payment_METHOD.COD.name())) {
-			order.setPaymentStatus(false);
-		} else {
-			order.setPaymentStatus(true);
-		}
+		order.setPaymentStatus(false);
 		order.setOrderStatus(ORDER_STATUS.PROCESSING);
 		Calendar calender = Calendar.getInstance();
 		calender.add(Calendar.DATE, DELIVERY_DAYS);
@@ -95,6 +105,76 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public List<Order> findAllOrders() {
 		return orderRepository.findAll();
+	}
+
+	@Override
+	public void makePayment(String orderId) {
+		Order order = orderRepository.findByOrderId(orderId);
+		order.setPaymentStatus(true);
+		orderRepository.save(order);
+
+	}
+
+	@Override
+	public void deleteOrder(String orderId) {
+		Order order = orderRepository.findByOrderId(orderId);
+		orderRepository.delete(order);
+
+	}
+
+	@Override
+	public Order cancelPlacedOrder(String orderId) {
+		Order order = orderRepository.findByOrderId(orderId);
+		Set<OrderDetails> orderDetails = order.getOrderDetails();
+		for (OrderDetails item : orderDetails) {
+			Product product = item.getProduct();
+			product.setQuantity(product.getQuantity() + item.getQuantity());
+			if (product.getQuantity() >= 0)
+				product.setInStock(true);
+			productRepository.save(product);
+
+		}
+		order.setOrderStatus(ORDER_STATUS.CANCELLED);
+		order.setCancelled(true);
+		Order cancelledOrder = orderRepository.save(order);
+		return cancelledOrder;
+	}
+
+	@Override
+	public Order updateOrder(String orderId, OrderRequestDetails orderRequestDetails) {
+		Order foundOrder = orderRepository.findByOrderId(orderId);
+		if (!orderRequestDetails.getFirstName().isEmpty())
+			foundOrder.setFirstName(orderRequestDetails.getFirstName());
+		if (!orderRequestDetails.getLastName().isEmpty())
+			foundOrder.setLastName(orderRequestDetails.getLastName());
+		if (!orderRequestDetails.getAddress().isEmpty())
+			foundOrder.setAddress(orderRequestDetails.getAddress());
+		foundOrder.setPaymentStatus(orderRequestDetails.isPaymentStatus());
+		if (orderRequestDetails.getOrderStatus().equalsIgnoreCase("Delivered")) {
+			foundOrder.setOrderStatus(ORDER_STATUS.DELIVERED);
+			foundOrder.setCancelled(false);
+		}
+		if (orderRequestDetails.getOrderStatus().equalsIgnoreCase("Processing")) {
+			foundOrder.setOrderStatus(ORDER_STATUS.PROCESSING);
+			foundOrder.setCancelled(false);
+		}
+		if (orderRequestDetails.getOrderStatus().equalsIgnoreCase("Cancelled")) {
+			foundOrder.setOrderStatus(ORDER_STATUS.CANCELLED);
+			// revert the quantity of products
+			Set<OrderDetails> orderDetails = foundOrder.getOrderDetails();
+			for (OrderDetails item : orderDetails) {
+				Product product = item.getProduct();
+				product.setQuantity(product.getQuantity() + item.getQuantity());
+				if (product.getQuantity() >= 0)
+					product.setInStock(true);
+				productRepository.save(product);
+
+			}
+			foundOrder.setCancelled(true);
+		}
+		Order updatedOrder = orderRepository.save(foundOrder);
+
+		return updatedOrder;
 	}
 
 }

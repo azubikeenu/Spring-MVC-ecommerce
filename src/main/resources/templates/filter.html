@@ -3,40 +3,21 @@
 </head>
 <body>
  <nav th:replace="fragments::menu"> </nav>
-         <div class="container">
-            <nav class="navbar navbar-expand-lg navbar-dark nav-bg p-2">
-                <div class="container-fluid">
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false"
-                        aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-
-                    <div class="collapse navbar-collapse" id="navbarColor02">
-                        <ul class="navbar-nav me-auto">
-                            <li class="nav-item" th:each ="category : ${categories}">
-                                <a class="nav-link active" th:href="@{'/category/' +${category.alias}}">[[${category.name}]]
-                                </a>
-                            </li>
-                        </ul>
-
-                    </div>
-                </div>
-            </nav>
-
-        </div>
-        
+           
 <div class="main">
-        <!----PLACE CONTENT HEHE-->
-                <section id="product-list" class="py-5">
+        <section id="product-list" class="py-5">
             <div class="container">
                 <div class="row">
                     <div class="col">
-                        <h3>Product List</h3>
+                        <h3>Products matching :  [[${keyword}]]</h3>
                     </div>
                 </div>
 
                 <div  class="row">
+                         <div class="col my-3 text-center" th:if="${products.size() == 0}">
+                            <h3>  No products found  </h3>
+                            
+                         </div>
                     <div  th:each ="product : *{products}" class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
                         <div class="card my-3 p-3 rounded shadow p-3 mb-5 bg-white rounded">
                             <a th:href="@{'/products/' + ${product.alias}}">

@@ -14,6 +14,8 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
 	Category findByCategoryId(String categoryId);
 
+	Category findByAlias(String alias);
+
 	@Query("SELECT c FROM Category c WHERE c.enabled = true ORDER BY c.name ASC")
 	List<Category> findAllActiveCategories();
 }

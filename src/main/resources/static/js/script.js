@@ -10,7 +10,9 @@ $(function() {
 	$('#signUp').parsley();
 	$('#shippingForm').parsley();
 	
-		
+	
+	renderItemsCounter();
+	
 	//////////------------USERS ---------------////////////
 	window.ParsleyValidator.addValidator('checkemail', {
 		validateString: function(value) {
@@ -281,7 +283,7 @@ window.ParsleyValidator.addValidator('check_product_name', {
   $('#productQuantity').change(function(e){
 	  const quantity=   parseInt(e.target.value);
       const newPrice = price*quantity ;
-    $ ("#productPrice").text(`${newPrice}`) ;  
+    $ ("#productPrice").text(`${newPrice.toFixed(2)}`) ;  
 	
 })
 
@@ -297,6 +299,7 @@ $('#addToCart').click(function(e){
 	const productName = $("#productName").text();
 	const price =  $ ("#productPrice").text();
     const product = {name : productName , quantity :productQuantity, image :  imagePath , id : productId ,totalQuantity,price }
+    renderItemsCounter()
     storeCartItemsInLocalStorage(product);
 })
 
@@ -328,7 +331,7 @@ function storeCartItemsInLocalStorage ( item ) {
 						</div>
                         <div class="col-md-3 "> <strong>${item.name}</strong>
                         </div>
-                        <div class="col-md-2"><span id="itemPrice">&#163;${item.price}</span> &times; <span id="itemQuantity">${item.quantity}</span> </div>
+                        <div class="col-md-2"><span id="itemPrice">&#163;${parseFloat(item.price).toFixed(1)}</span> &times; <span id="itemQuantity">${item.quantity}</span> </div>
                        <div class="col-md-2">
                             <div>
                                 <ul class="pagination">
@@ -393,8 +396,9 @@ function storeCartItemsInLocalStorage ( item ) {
 			const {product_id} = textbox.dataset;
             value = parseInt(value) +1 ;
             textbox.value = value <= maxQuantity ? value : maxQuantity;	
-			persistQuantityInLocalStorage(product_id,value)
-			reflectQuantityOnDiv(container ,value);
+			 
+			persistQuantityInLocalStorage(product_id,parseInt(textbox.value))
+			reflectQuantityOnDiv(container ,textbox.value);
 			reflectSubTotalAndTotalItems();
 			
 	}) )	
@@ -410,8 +414,8 @@ function storeCartItemsInLocalStorage ( item ) {
             value = parseInt(value) -1 ;
 			if(value>=1){
 				textbox.value = value;
-			    persistQuantityInLocalStorage(product_id,value)
-				reflectQuantityOnDiv(container ,value);
+			    persistQuantityInLocalStorage(product_id,parseInt(textbox.value))
+				reflectQuantityOnDiv(container ,textbox.value);
 				reflectSubTotalAndTotalItems();
 			}
            
@@ -440,6 +444,7 @@ function storeCartItemsInLocalStorage ( item ) {
 		e.target.parentElement.parentElement.remove();
 		localStorage.setItem("cart",JSON.stringify( cart ) );
 		reflectSubTotalAndTotalItems();
+		renderItemsCounter();
 	
 	}) )
 	
@@ -555,8 +560,15 @@ $('.deleteOrder').on('click', function(e){
 	}
 	
 })
+
+function renderItemsCounter(){
+	 const cart = !localStorage.getItem( "cart" ) ? [] : JSON.parse( localStorage.getItem( "cart" ) );	
+     console.log(cart.length > 0);
+     (cart.length > 0) ?  $("#itemsCount").css("display", "inline"): $("#itemsCount").css("display", "none")
+	 $("#itemsCount").text(cart.length);
+}
 		
-	
+
 		
 })
 

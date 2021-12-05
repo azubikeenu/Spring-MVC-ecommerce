@@ -171,6 +171,10 @@ p.item-hl {
   background-color: rgb(61, 114, 164, 0.8);
 }
 
+#itemsCount{
+	display: none
+}
+
 @media(max-width: 650px) {
     .creditCardForm .owner,
     .creditCardForm .CVV,

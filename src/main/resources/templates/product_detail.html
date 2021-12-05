@@ -13,7 +13,7 @@
 
                 <div class="row">
                     <div class="col-md-5">
-                        <img  th:src="@{${product.imagePath}}" alt="" class="img-fluid">
+                        <img  th:src="@{${product.imagePath}}" alt="" class="img-fluid w-75">
                     </div>
                     <div class="col-md-4 pr-4">
                         <input type="hidden" th:value ="${product.productId}" id="productId">
@@ -29,7 +29,7 @@
                     <div class="col-md-3">
                         <div class="row ">
                             <div class="col action-item " style="border-right: none;">Price : </div>
-                            <div class="col action-item" style="border-left: none;" ><span>&#163;</span><span id="productPrice">[[${product.price}]]</span></div>
+                            <div class="col action-item" style="border-left: none;" ><span>&#163;</span><span id="productPrice">[[${#numbers.formatDecimal(product.price,1,2)}]]</span></div>
                         </div>
                         <div class="row ">
                             <div class="col action-item " style="border-right: none; border-top: none;">Status : </div>

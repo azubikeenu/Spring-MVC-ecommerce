@@ -494,6 +494,9 @@ $('#checkOutBtn').click(function(e){
 		e.preventDefault();
 	    const {id} = e.target.dataset;
 		const url = `${window.location.origin}/e-shop/api/admin/orders/${id}`;
+			$('.deliveryContainer').css('display' ,'block');
+		    $(".isPaidContainer").css("display","block");
+			$("#orderPaid").removeAttr("disabled");
 		$.get(url,function(data,status){
 			
 			$("#firstNameEdit").val(data.firstName)
@@ -503,8 +506,16 @@ $('#checkOutBtn').click(function(e){
 			$(`#orderStatus option[value=${data.orderStatus.toLowerCase()}]`).attr('selected', 'selected');
 		    $("#addressEdit").text(data.address);
 			 data.paymentStatus ? $('#orderPaid').prop("checked" , true) : $('#orderPaid').prop("checked" , false); 
-	         console.log(data.orderStatus=='DELIVERED');
-		    if(data.orderStatus== "DELIVERED"|| data.orderStatus== "CANCELLED" ) $("#orderPaid").attr("disabled","disabled");
+			
+		   if(data.orderStatus== "DELIVERED" && data.paymentStatus ){ 
+			$('.deliveryContainer').css('display' ,'none');
+			$("#orderPaid").attr("disabled","disabled");
+			}
+			 if(data.orderStatus== "CANCELLED"){ 
+			$('.deliveryContainer').css('display' ,'none');
+			$(".isPaidContainer").css("display","none");
+			}
+			
 		})
 		window.$('#orderEditModal').modal;
 

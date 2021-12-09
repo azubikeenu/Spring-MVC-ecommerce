@@ -73,7 +73,7 @@
                              <tr th:each="order : ${orders}">
                               <th scope="row">[[${order.orderId}]]</th>
                               <td>[[${#dates.format(order.orderTime, 'dd-MM-yyyy')}]]</td>
-                                <td>[[${order.total}]]</td>
+                                <td>[[${#numbers.formatDecimal(order.total , 1,2)}]]</td>
                                 <td class="text-center"  th:switch="${order.paymentStatus}">
                             <i class="fas fa-check" th:case=true></i>
                             <i class="fas fa-times" th:case=false></i>

@@ -21,7 +21,7 @@
                          <input id="totalQuantity" type="hidden" th:value ="${totalQuantity}" >
                         <h3 class="item-hl" id="productName">[[${product.name}]]</h3>
                         <p class="item-hl">Place reviews here</p>
-                        <p class="item-hl">Price :<span>&#163;</span>[[${product.price}]]</p>
+                        <p class="item-hl">Price :<span>&#163;</span> <span id="productInitPrice">[[${product.price}]]</span></p>
                         <p class="item-hl">Description :
                            [[${product.description}]]
                         </p>

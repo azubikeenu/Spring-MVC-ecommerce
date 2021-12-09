@@ -207,7 +207,6 @@ $('.deleteUser').on('click', function(e){
 		}		
 	}).then(response => response.json())
 	   .then(data => {
-		console.log(data);
 		window.location.href =  `${ORIGIN}/e-shop/admin/categories/delete/redirect`
 	} ).catch(err => console.log(err))
 	
@@ -292,13 +291,14 @@ window.ParsleyValidator.addValidator('check_product_name', {
 // ADD ITEM TO SHOPPING Cart
 
 $('#addToCart').click(function(e){
+
 	const productId =  $('#productId').val();
 	const productQuantity = $('#productQuantity').val()
 	const imagePath =window.location.origin +"/e-shop" +$("#productImage").val();
 	const totalQuantity = $('#totalQuantity').val();
 	const productName = $("#productName").text();
-	const price =  $ ("#productPrice").text();
-    const product = {name : productName , quantity :productQuantity, image :  imagePath , id : productId ,totalQuantity,price }
+	const price =$('#productInitPrice').text();
+    const product = {name : productName , quantity :productQuantity, image :  imagePath , id : productId ,totalQuantity,price}
     renderItemsCounter()
     storeCartItemsInLocalStorage(product);
 })

@@ -37,7 +37,7 @@
                             <i class="fas fa-times" th:case=false></i>
                         </td>
                         <td  > <span class="badge rounded-pill bg-info">[[${order.orderStatus}]]</span></td>
-                        <td>[[${order.total}]]</td>
+                        <td>[[${#numbers.formatDecimal(order.total , 1,2)}]]</td>
                         <td>
                             <a th:href="@{'/orders/' + ${order.orderId}}" class="btn btn-warning btn-sm"><i class="fas fa-eye"></i></a>
                             
